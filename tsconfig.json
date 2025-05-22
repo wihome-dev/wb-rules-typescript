@@ -5,7 +5,8 @@
         "paths": {
             "@wbm*": ["./src/wb-rules-modules*"]
         },
-        "allowJs": true
+        "allowJs": true,
+        "strictNullChecks": true
     },
     "include": [
         "src/wb-rules/*",

@@ -2,5 +2,12 @@
     "files.eol": "\n",
     "npm.packageManager": "yarn",
     "npm.scriptRunner": "yarn",
-    "task.autoDetect": "off"
+    "task.autoDetect": "off",
+    "eslint.useFlatConfig": true,
+    "eslint.format.enable": true,
+    "[javascript][typescript]": {
+        "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+        "editor.formatOnType": true,
+        "editor.formatOnSave": true,
+    }
 }
