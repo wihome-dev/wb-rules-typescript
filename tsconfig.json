@@ -1,0 +1,23 @@
+{
+    "compilerOptions": {
+        "target": "ES6",
+        "outDir": "./build",
+        "paths": {
+            "@wbm*": ["./src/wb-rules-modules*"]
+        },
+        "allowJs": true
+    },
+    "include": [
+        "src/wb-rules/*",
+        "src/wb-rules-modules/*",
+        "types/*"
+    ],
+    "tsc-alias": {
+        "replacers": {
+            "wb-rules-modules": {
+                "file": "tsc-replacers/wb-replacer.js",
+                "enabled": true
+            }
+        }
+    }
+}

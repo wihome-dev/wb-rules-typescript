@@ -1,0 +1,6 @@
+{
+    "files.eol": "\n",
+    "npm.packageManager": "yarn",
+    "npm.scriptRunner": "yarn",
+    "task.autoDetect": "off"
+}

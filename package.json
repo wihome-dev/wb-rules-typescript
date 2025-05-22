@@ -1,0 +1,16 @@
+{
+  "name": "wirenboard",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc && tsc-alias && babel build -d dist",
+    "deploy": "wsl rsync -e 'ssh -I /usr/lib/librtpkcs11ecp.so' -rltzvgO --progress --delete --exclude='alarms.conf' --groupmap=*:developers dist/* 'wihome@10.200.200.1:/mnt/data/etc/'"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.27.2",
+    "@babel/core": "^7.27.1",
+    "@babel/preset-env": "^7.27.2",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.8.3"
+  }
+}
