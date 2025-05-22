@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "eslint" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "eslint" ]
 
 jobs:
   build:

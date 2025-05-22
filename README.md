@@ -1,5 +1,5 @@
 # Шаблон проекта wb-rules 2.0 для VS Code
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/wihome-dev/wb-rules-typescript/build.yml?branch=main&logo=github&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/wihome-dev/wb-rules-typescript/build.yml?branch=eslint&logo=github&style=flat-square)
 
 Готовый шаблон по материалам статей на Дзене, настроенный на работу с TypeScript. Используется для программирования правил контроллера компании Wiren Board. Снимает ограничения на разработку, накладываемые ECMAScript 5.
 
