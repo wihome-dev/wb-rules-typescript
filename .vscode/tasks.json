@@ -6,8 +6,7 @@
 			"script": "build",
 			"group": "build",
 			"problemMatcher": [],
-			"label": "yarn: build",
-			"detail": "tsc && tsc-alias && babel build -d dist"
+			"label": "yarn build"
 		}
 	]
 }
