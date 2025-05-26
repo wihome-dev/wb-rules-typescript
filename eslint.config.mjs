@@ -22,6 +22,12 @@ export default tseslint.config(
     'types/'
   ]),
   {
+    rules: {
+      // Для поддержки конструкций вида dev['deviceId']['control']
+      '@typescript-eslint/dot-notation': 'off',
+      // Для поддержки конструкций вида dev['deviceId']['control']
+      '@typescript-eslint/no-unsafe-member-access': 'off'
+    },
     languageOptions: {
       parserOptions: {
         projectService: true,
