@@ -1,1 +1,1 @@
-declare const module: { static: any }
+declare const module: { static: Record<string, unknown> }
