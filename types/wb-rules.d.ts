@@ -40,7 +40,7 @@ declare interface WbLog {
   error(fmt: string, ...args: (string | number | boolean)[]): void
 }
 
-declare const log: WbLog
+declare var log: WbLog
 
 declare type WbDevControl = Record<string, unknown>
 
@@ -49,7 +49,7 @@ declare type WbDev = Record<string, WbDevControl>
 /**
  * Объект доступа к MQTT-топикам устройства
  */
-declare const dev: WbDev
+declare var dev: WbDev
 
 interface Timer {
   firing: boolean
