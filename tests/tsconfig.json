@@ -1,0 +1,22 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "paths": {
+            "@wb*": ["../src/wb-rules*"],
+            "@wbm*": ["../src/wb-rules-modules*"]
+        },
+        "module": "NodeNext",
+        "skipLibCheck": false
+    },
+    "include": [
+        "./wb-engine-mocks.ts",
+        "**/*.test.ts",
+        "../types/*"
+    ],
+    "ts-node": {
+        "require": [
+            "tsconfig-paths/register"
+        ],
+        "files": true
+    }
+}

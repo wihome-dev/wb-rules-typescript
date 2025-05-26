@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "eslint && tsc && tsc-alias && babel build -d dist",
+    "test": "ts-node -P tests/tsconfig.json node_modules/jest/bin/jest.js",
+    "build": "eslint && yarn test && tsc && tsc-alias && babel build -d dist",
     "deploy": "wsl rsync -e 'ssh -I /usr/lib/librtpkcs11ecp.so' -rltzvgO --progress --delete --exclude='alarms.conf' --groupmap=*:developers dist/* 'wihome@10.200.200.1:/mnt/data/etc/'"
   },
   "devDependencies": {
@@ -11,11 +12,20 @@
     "@babel/core": "^7.27.1",
     "@babel/preset-env": "^7.27.2",
     "@eslint/js": "^9.27.0",
+    "@types/jest": "^29.5.14",
+    "@types/rewire": "^2.5.30",
     "eslint": "^9.27.0",
     "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-jest": "^28.11.0",
     "eslint-plugin-prettier": "^5.4.0",
+    "jest": "^29.7.0",
+    "jest-mock-extended": "^4.0.0-beta1",
     "prettier": "3.5.3",
+    "rewire": "^7.0.0",
+    "ts-jest": "^29.3.4",
+    "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1"
   }

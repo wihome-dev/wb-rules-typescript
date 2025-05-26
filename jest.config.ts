@@ -1,0 +1,17 @@
+import type { Config } from 'jest'
+import { createDefaultPreset } from 'ts-jest'
+
+const tsJestTransformCfg = createDefaultPreset().transform
+
+const config: Config = {
+    transform: {
+        ...tsJestTransformCfg
+    },
+    moduleNameMapper: {
+        "@wb/(.*)": "<rootDir>/src/wb-rules/$1",
+        "@wbm/(.*)": "<rootDir>/src/wb-rules-modules/$1"
+    },
+    setupFiles: ['<rootDir>/tests/wb-engine-mocks.ts']
+}
+
+export default config
