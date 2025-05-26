@@ -1,52 +1,55 @@
-/* .ts */
+declare type WbLogFunc = (
+  message: string,
+  ...args: (string | number | boolean)[]
+) => void
 
-declare function log(fmt: string, ...args: (string | number | boolean)[]): void
-
-/**
- * Запись информации в лог
- */
-declare class log {
+declare interface WbLog {
   /**
-   * отладочное, выводится только при включённой отладке
-   * @static
-   * @param fmt
+   * Запись в лог информационного сообщения, полезного в долгосрочной перспективе.
+   * @param message
    * @param args
-   * @memberof log
    */
-  static debug(fmt: string, ...args: (string | number | boolean)[]): void
+  (message: string, ...args: (string | number | boolean)[]): void
 
   /**
-   * информационное
-   * @static
-   * @param fmt
+   * Запись в лог сообщения, полезного при отладке в процессе разработки и не представляющего ценности в долгосрочной перспективе.
+   * @param message
    * @param args
-   * @memberof log
    */
-  static info(fmt: string, ...args: (string | number | boolean)[]): void
+  debug(message: string, ...args: (string | number | boolean)[]): void
 
   /**
-   * предупреждение
-   * @static
-   * @param fmt
+   * Запись в лог информационного сообщения, полезного в долгосрочной перспективе.
+   * @param message
    * @param args
-   * @memberof log
    */
-  static warning(fmt: string, ...args: (string | number | boolean)[]): void
+  info(message: string, ...args: (string | number | boolean)[]): void
 
   /**
-   * ошибка
-   * @static
-   * @param fmt
+   * Запись ненормального или неожиданного события в потоке приложения, но не прекращение выполнения.
+   * @param message
    * @param args
-   * @memberof log
    */
-  static error(fmt: string, ...args: (string | number | boolean)[]): void
+  warning(message: string, ...args: (string | number | boolean)[]): void
+
+  /**
+   * Запись события остановки выполнения из-за сбоя текущего действия.
+   * @param message
+   * @param args
+   */
+  error(fmt: string, ...args: (string | number | boolean)[]): void
 }
 
+declare const log: WbLog
+
+declare type WbDevControl = Record<string, unknown>
+
+declare type WbDev = Record<string, WbDevControl>
+
 /**
- * Объект доступа к полям устройств
+ * Объект доступа к MQTT-топикам устройства
  */
-declare let dev: object
+declare const dev: WbDev
 
 interface Timer {
   firing: boolean
@@ -59,10 +62,7 @@ type TimerArray = Record<string, Timer>
 /**
  * Объект доступа к именованным таймерам
  */
-declare let timers: TimerArray
-
-declare let global: object
-declare let exports: object
+declare var timers: TimerArray
 
 /**
  * Объект описания правила
@@ -338,6 +338,11 @@ declare function spawn(
   options: SpawnOptions | ExitCallback
 ): void
 
+declare function runShellCommand(
+  command: string,
+  options: SpawnOptions | ExitCallback
+): void
+
 interface ReadConfigOptions {
   logErrorOnNoFile: boolean
 }
@@ -353,7 +358,7 @@ declare function defineAlias(globalName: string, cellName: string): void
  * Следует учесть, что функция format и xformat съедают одинарные квадратные скобки!
  * Поэтому, если необходимо их вывести, то нужно дублировать.
  */
-interface String {
+declare interface String {
   format(...args: (string | number | boolean)[]): string
   xformat(...args: (string | number | boolean)[]): string
 }
@@ -396,8 +401,6 @@ type PersistentStorage = new (
   name: string,
   options: StorageOptions
 ) => PersistentStorage
-
-declare function require(module: string): object
 
 /**
  * Класс оповещения
