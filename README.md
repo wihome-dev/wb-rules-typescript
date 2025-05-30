@@ -34,5 +34,7 @@ https://github.com/wirenboard/wb-rules
   https://dzen.ru/a/aCg1B5ghH0M-pFXY
 - статический анализ кода при помощи ESLint и Prettier<br>
   https://dzen.ru/a/aCuMffKDJV1jgzaY
+- создаём юнит-тесты с применением Jest<br>
+  https://dzen.ru/a/aC1B4K3VQRsD4pYB
 
 Вторая статья в подробностях рассказывает о структуре проекта, которая легла в основу данного шаблона.
