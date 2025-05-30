@@ -4,7 +4,7 @@
 
 ## Текущее состояние
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/wihome-dev/wb-rules-typescript/build.yml?branch=latest&logo=github&style=flat-square)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/wihome-dev/wb-rules-typescript/build.yml?branch=jest&logo=github&style=flat-square)
 
 ## Начало работы
 
