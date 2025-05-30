@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "test": "ts-node -P tests/tsconfig.json node_modules/jest/bin/jest.js",
-    "build": "eslint && yarn test && tsc && tsc-alias && babel build -d dist",
+    "build": "eslint && yarn test && rollup -c && tsc-alias && babel build -d dist",
     "deploy": "wsl rsync -e 'ssh -I /usr/lib/librtpkcs11ecp.so' -rltzvgO --progress --delete --exclude='alarms.conf' --groupmap=*:developers dist/* 'wihome@10.200.200.1:/mnt/data/etc/'"
   },
   "devDependencies": {
@@ -12,6 +12,8 @@
     "@babel/core": "^7.27.1",
     "@babel/preset-env": "^7.27.2",
     "@eslint/js": "^9.27.0",
+    "@rollup/plugin-multi-entry": "^6.0.1",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@types/jest": "^29.5.14",
     "@types/rewire": "^2.5.30",
     "eslint": "^9.27.0",
@@ -22,10 +24,13 @@
     "jest-mock-extended": "^4.0.0-beta1",
     "prettier": "3.5.3",
     "rewire": "^7.0.0",
+    "rollup": "^4.41.1",
+    "rollup-plugin-delete": "^3.0.1",
     "ts-jest": "^29.3.4",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.16",
     "tsconfig-paths": "^4.2.0",
+    "tslib": "^2.8.1",
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.32.1"
   }

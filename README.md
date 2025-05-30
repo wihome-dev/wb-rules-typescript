@@ -30,11 +30,13 @@ https://github.com/wirenboard/wb-rules
 
 - перед началом<br/>
   https://dzen.ru/a/aCLjKbtWvw8Xgyhy
-- пишем на TypeScript без ограничений<br>
+- пишем на TypeScript без ограничений<br/>
   https://dzen.ru/a/aCg1B5ghH0M-pFXY
-- статический анализ кода при помощи ESLint и Prettier<br>
+- статический анализ кода при помощи ESLint и Prettier<br/>
   https://dzen.ru/a/aCuMffKDJV1jgzaY
-- создаём юнит-тесты с применением Jest<br>
+- создаём юнит-тесты с применением Jest<br/>
   https://dzen.ru/a/aC1B4K3VQRsD4pYB
+- удаляем лишний код при помощи Rollup и Tree-Shaking<br/>
+  https://dzen.ru/a/aDk_iti4dG6GEDS3
 
 Вторая статья в подробностях рассказывает о структуре проекта, которая легла в основу данного шаблона.

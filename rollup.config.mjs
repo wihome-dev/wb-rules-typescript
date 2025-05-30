@@ -1,0 +1,17 @@
+import multi from '@rollup/plugin-multi-entry'
+import typescript from '@rollup/plugin-typescript'
+import del from 'rollup-plugin-delete'
+
+export default {
+  input: ['src/wb-rules/*.ts'],
+  plugins: [
+    multi({ preserveModules: true }),
+    typescript(),
+    del({ targets: ['build/*', 'dist/*'] })
+  ],
+  output: {
+    format: 'es',
+    dir: 'build',
+    preserveModules: true
+  }
+}

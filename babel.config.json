@@ -1,3 +1,4 @@
 {
+  "ignore": ["*/_virtual"],
   "presets": ["@babel/preset-env"]
 }
