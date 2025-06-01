@@ -9,7 +9,7 @@
         "skipLibCheck": false
     },
     "include": [
-        "./wb-engine-mocks.ts",
+        "./wb-engine-setup.ts",
         "**/*.test.ts",
         "../types/*"
     ],

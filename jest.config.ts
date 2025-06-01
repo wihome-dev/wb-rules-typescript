@@ -11,7 +11,7 @@ const config: Config = {
         "@wb/(.*)": "<rootDir>/src/wb-rules/$1",
         "@wbm/(.*)": "<rootDir>/src/wb-rules-modules/$1"
     },
-    setupFiles: ['<rootDir>/tests/wb-engine-mocks.ts']
+    setupFiles: ['<rootDir>/tests/wb-engine-setup.ts']
 }
 
 export default config
