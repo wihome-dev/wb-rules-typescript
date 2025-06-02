@@ -1,14 +1,17 @@
 {
     "compilerOptions": {
-        "target": "ES6",
-        "outDir": "./build",
+        "target": "es5",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "outDir": "./dist",
         "paths": {
             "@wbm*": ["./src/wb-rules-modules*"]
         },
         "allowJs": true,
         "strictNullChecks": true,
         "skipLibCheck": true,
-        "esModuleInterop": true
+        "esModuleInterop": true,
+        "alwaysStrict": true,
     },
     "include": [
         "src/wb-rules/*",

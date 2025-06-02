@@ -2,6 +2,7 @@ import multi from '@rollup/plugin-multi-entry'
 import typescript from '@rollup/plugin-typescript'
 import dotenv from '@dotenv-run/rollup'
 import del from 'rollup-plugin-delete'
+import tscAlias from 'rollup-plugin-tsc-alias'
 
 export default {
   input: ['src/wb-rules/*.ts'],
@@ -12,11 +13,12 @@ export default {
       prefix: '^APP_',
       verbose: false
     }),
-    del({ targets: ['build/*', 'dist/*'] })
+    del({ targets: 'dist/*' }),
+    tscAlias()
   ],
   output: {
-    format: 'es',
-    dir: 'build',
+    format: 'cjs',
+    dir: 'dist',
     preserveModules: true
   }
 }
