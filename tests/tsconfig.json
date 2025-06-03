@@ -8,11 +8,7 @@
         "module": "NodeNext",
         "skipLibCheck": false
     },
-    "include": [
-        "./wb-engine-setup.ts",
-        "**/*.test.ts",
-        "../types/*"
-    ],
+    "include": ["**/*.ts", "../types/*"],
     "ts-node": {
         "require": [
             "tsconfig-paths/register"

@@ -1,3 +1,8 @@
-import { HELLO_MESSAGE } from '@wbm/example-module'
+import { useExample } from '@wbm/example-module'
 
-log(HELLO_MESSAGE)
+const example = useExample({
+  name: process.env.APP_NAME,
+  secret: process.env.APP_SECRET
+})
+
+log(example.getName())
