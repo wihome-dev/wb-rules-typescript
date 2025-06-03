@@ -1,5 +1,5 @@
 declare type WbLogFunc = (
-  message: string,
+  message: string | undefined,
   ...args: (string | number | boolean)[]
 ) => void
 
@@ -9,35 +9,35 @@ declare interface WbLog {
    * @param message
    * @param args
    */
-  (message: string, ...args: (string | number | boolean)[]): void
+  (message: string | undefined, ...args: (string | number | boolean)[]): void
 
   /**
    * Запись в лог сообщения, полезного при отладке в процессе разработки и не представляющего ценности в долгосрочной перспективе.
    * @param message
    * @param args
    */
-  debug(message: string, ...args: (string | number | boolean)[]): void
+  debug(message: string | undefined, ...args: (string | number | boolean)[]): void
 
   /**
    * Запись в лог информационного сообщения, полезного в долгосрочной перспективе.
    * @param message
    * @param args
    */
-  info(message: string, ...args: (string | number | boolean)[]): void
+  info(message: string | undefined, ...args: (string | number | boolean)[]): void
 
   /**
    * Запись ненормального или неожиданного события в потоке приложения, но не прекращение выполнения.
    * @param message
    * @param args
    */
-  warning(message: string, ...args: (string | number | boolean)[]): void
+  warning(message: string | undefined, ...args: (string | number | boolean)[]): void
 
   /**
    * Запись события остановки выполнения из-за сбоя текущего действия.
    * @param message
    * @param args
    */
-  error(fmt: string, ...args: (string | number | boolean)[]): void
+  error(fmt: string | undefined, ...args: (string | number | boolean)[]): void
 }
 
 declare var log: WbLog
