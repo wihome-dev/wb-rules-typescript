@@ -13,8 +13,17 @@ export default {
       prefix: '^APP_',
       verbose: false
     }),
-    del({ targets: 'dist/*' }),
-    tscAlias()
+    del({
+      targets: 'dist/*',
+      hook: 'buildStart',
+      verbose: false
+    }),
+    tscAlias(),
+    del({
+      targets: 'dist/_virtual',
+      hook: 'closeBundle',
+      verbose: false
+    })
   ],
   output: {
     format: 'cjs',
