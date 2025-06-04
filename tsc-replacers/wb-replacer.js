@@ -1,3 +1,5 @@
-exports.default = function ({ orig }) {
-    return orig.replace(/\.\.\/wb-rules-modules\/(.+)\.js/g, "$1");
+exports.default = function moduleReplacer({ orig }) {
+    return orig
+        .replace('../wb-rules-modules/', '')
+        .replace(/\.js'\)$/i, '\')');
 }
