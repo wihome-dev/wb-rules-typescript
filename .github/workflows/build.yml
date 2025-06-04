@@ -5,9 +5,9 @@ name: Node.js CI
 
 on:
   push:
-    branches: [ "latest" ]
+    branches: [ "babel-stable" ]
   pull_request:
-    branches: [ "latest" ]
+    branches: [ "babel-stable" ]
 
 jobs:
   build:
