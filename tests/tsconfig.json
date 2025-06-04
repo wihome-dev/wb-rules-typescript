@@ -6,6 +6,7 @@
             "@wbm*": ["../src/wb-rules-modules*"]
         },
         "module": "NodeNext",
+        "moduleResolution": "NodeNext",
         "skipLibCheck": false
     },
     "include": ["**/*.ts", "../types/*"],
