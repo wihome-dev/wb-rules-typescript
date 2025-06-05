@@ -5,6 +5,8 @@
 ## Текущее состояние
 
 ![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/wihome-dev/wb-rules-typescript/build.yml?branch=latest&logo=github&style=flat-square)
+[![GitHub Repo Stars](https://img.shields.io/github/stars/wihome-dev/wb-rules-typescript?color=594ae2&style=flat-square&logo=github)](https://github.com/wihome-dev/wb-rules-typescript/stargazers)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/wihome-dev/wb-rules-typescript?color=594ae2&style=flat-square&logo=github)](https://github.com/wihome-dev/wb-rules-typescript)
 
 ## Начало работы
 
@@ -19,24 +21,28 @@
 <b>Примечание:</b><br/>
 в статьях о разработке правил целевой директорией в системе Windows является `D:\repos\wirenboard`.
 
+Ветка [latest](https://github.com/wihome-dev/wb-rules-typescript/tree/latest) является экспериментальной и может опережать ход повествования. Актуальная версия по материалам статей находится в ветке [babel-stable](https://github.com/wihome-dev/wb-rules-typescript/tree/babel-stable).
+
 ## Полезные ссылки
 
 Движок правил wb-rules 2.0:<br/>
 https://github.com/wirenboard/wb-rules
 
+Канал про автоматизации на основе оборудования Wirenboard на Дзене:<br/>
+https://dzen.ru/wihome
+
 ### Серия руководств
 
 О программировании контроллера Wirenboard с помощью Visual Studio Code:
 
-- перед началом<br/>
-  https://dzen.ru/a/aCLjKbtWvw8Xgyhy
-- пишем на TypeScript без ограничений<br/>
-  https://dzen.ru/a/aCg1B5ghH0M-pFXY
-- статический анализ кода при помощи ESLint и Prettier<br/>
-  https://dzen.ru/a/aCuMffKDJV1jgzaY
-- создаём юнит-тесты с применением Jest<br/>
-  https://dzen.ru/a/aC1B4K3VQRsD4pYB
-- удаляем лишний код при помощи Rollup и Tree-Shaking<br/>
-  https://dzen.ru/a/aDk_iti4dG6GEDS3
+- [Перед началом](https://dzen.ru/a/aCLjKbtWvw8Xgyhy)
+- [Пишем на TypeScript без ограничений](https://dzen.ru/a/aCg1B5ghH0M-pFXY)
+- [Статический анализ кода при помощи ESLint и Prettier](https://dzen.ru/a/aCuMffKDJV1jgzaY)
+- [Создаём юнит-тесты с применением Jest](https://dzen.ru/a/aC1B4K3VQRsD4pYB)
+- [Удаляем лишний код при помощи Rollup и Tree-Shaking](https://dzen.ru/a/aDk_iti4dG6GEDS3)  
+- [Переменные окружения](https://dzen.ru/a/aD32tRnTm0PW3nJe)
 
 Вторая статья в подробностях рассказывает о структуре проекта, которая легла в основу данного шаблона.
+
+Подборка статей [о тонкостях настройки контроллера по SSH](https://dzen.ru/suite/7646a2f0-8e73-45ae-b8f1-a097412ab38c):<br/>
+от терминала Windows до запрета root-доступа на контроллер.
