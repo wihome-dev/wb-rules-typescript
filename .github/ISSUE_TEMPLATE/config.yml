@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub Discussions
+    url: https://github.com/wihome-dev/wb-rules-typescript/discussions
+    about: Пожалуйста, задавайте вопросы и отвечайте на них здесь
+  - name: Уютный чат Wirenboard в Телеграме
+    url: https://t.me/wirenboard
+    about: Официальная группа, чтобы обсудить устройства и обменяться опытом.
+  - name: Канал на Дзене
+    url: https://dzen.ru/wihome
+    about: Об автоматизациях с применением оборудования Wirenboard
