@@ -1,19 +1,26 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-        "paths": {
-            "@wb*": ["../src/wb-rules*"],
-            "@wbm*": ["../src/wb-rules-modules*"]
-        },
-        "module": "NodeNext",
-        "moduleResolution": "NodeNext",
-        "skipLibCheck": false
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "paths": {
+      "@wb*": [
+        "../src/wb-rules*"
+      ],
+      "@wbm*": [
+        "../src/wb-rules-modules*"
+      ]
     },
-    "include": ["**/*.ts", "../types/*"],
-    "ts-node": {
-        "require": [
-            "tsconfig-paths/register"
-        ],
-        "files": true
-    }
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "skipLibCheck": false
+  },
+  "include": [
+    "**/*.ts",
+    "../types/*"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ],
+    "files": true
+  }
 }

@@ -1,22 +1,60 @@
-import { globalIgnores } from 'eslint/config'
-import eslint from '@eslint/js'
+import js from '@eslint/js'
+import globals from 'globals'
 import tseslint from 'typescript-eslint'
-import prettierRecommended from 'eslint-plugin-prettier/recommended'
+import stylistic from '@stylistic/eslint-plugin'
 import pluginJest from 'eslint-plugin-jest'
+import { defineConfig, globalIgnores } from 'eslint/config'
 
-export default tseslint.config(
-  eslint.configs.recommended,
-  tseslint.configs.strictTypeChecked.map((config) => ({
+export default defineConfig([
+  { files: ['**/*.{js,mjs,cjs,ts,mts,cts}'], plugins: { js }, extends: ['js/recommended'] },
+  { files: ['**/*.{js,mjs,cjs,ts,mts,cts}'], languageOptions: { globals: globals.node } },
+  // TypeScript Defaults
+  tseslint.configs.strictTypeChecked.map(config => ({
     ...config,
-    files: ['**/*.ts'] // Правила TS только для файлов TS.
+    files: ['**/*.ts']
   })),
-  tseslint.configs.stylisticTypeChecked.map((config) => ({
+  tseslint.configs.stylisticTypeChecked.map(config => ({
     ...config,
-    files: ['**/*.ts'] // Правила TS только для файлов TS.
+    files: ['**/*.ts']
   })),
-  prettierRecommended,
+  // TypeScript Overrides
   {
-    files: ['tests/**/*.{js,ts}'],
+    files: ['**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.eslint.json'],
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
+  },
+  // TypeScript Type Definition Overrides
+  {
+    files: ['types/**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/no-extraneous-class': 'off'
+    }
+  },
+  // Stylistic Defaults
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    ...stylistic.configs.customize({
+      quotes: 'single',
+      quoteProps: 'consistent',
+      commaDangle: 'never',
+      indent: 2
+    })
+  },
+  // Stylistic Overrides
+  {
+    files: ['**/*.{js,mjs,cjs,ts,mts,cts}'],
+    rules: {
+      '@stylistic/curly-newline': ['error', 'always'],
+      '@stylistic/nonblock-statement-body-position': ['error', 'below']
+    }
+  },
+  // Jest Defaults
+  {
+    files: ['tests/**/*.test.{js,ts}'],
     plugins: { jest: pluginJest },
     languageOptions: {
       globals: pluginJest.environments.globals.globals
@@ -34,21 +72,6 @@ export default tseslint.config(
     'build/',
     'dist/',
     'tsc-replacers/',
-    'types/',
-    'jest.config.ts'
-  ]),
-  {
-    rules: {
-      // Для поддержки конструкций вида dev['deviceId']['control']
-      '@typescript-eslint/dot-notation': 'off',
-      // Для поддержки конструкций вида dev['deviceId']['control']
-      '@typescript-eslint/no-unsafe-member-access': 'off'
-    },
-    languageOptions: {
-      parserOptions: {
-        projectService: true,
-        tsconfigRootDir: import.meta.dirname
-      }
-    }
-  }
-)
+    'types/'
+  ])
+])
