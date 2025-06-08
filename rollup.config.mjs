@@ -15,7 +15,7 @@ export default {
     del({ targets: ['build/*', 'dist/*'] })
   ],
   output: {
-    format: 'es',
+    format: 'cjs',
     dir: 'build',
     preserveModules: true
   }
