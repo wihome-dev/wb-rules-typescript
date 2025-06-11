@@ -64,6 +64,8 @@ type TimerArray = Record<string, Timer>
  */
 declare var timers: TimerArray
 
+type MqttValue = string | number | boolean
+
 /**
  * Объект описания правила
  */
@@ -90,7 +92,7 @@ interface RuleType {
    * @param cellName Поле, по которому произошло событие
    */
   then(
-    newValue?: string | number | boolean,
+    newValue?: MqttValue,
     devName?: string,
     cellName?: string
   ): void

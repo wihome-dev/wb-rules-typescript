@@ -1,17 +1,30 @@
+type EventCallback<TArgs> = (args: TArgs) => void
+
+export interface Event<TArgs> {
+  /** Подписывает на событие, есть возможность отписки. */
+  on: (callback: EventCallback<TArgs>) => { off: () => void }
+  /** Подписывает на событие, однократное выполнение. */
+  once: (callback: EventCallback<TArgs>) => void
+  /** Отписывает указанный обработчик от прослушивания события. */
+  off: (callback: EventCallback<TArgs>) => void
+  /** Объявляет всем подписчикам о наступлении события. */
+  raise: (args: TArgs) => void
+}
+
 /**
  * Построитель экземпляра события.
  */
-export function useEvent<TArgs = void>() {
-  const callbacks: ((args: TArgs) => void)[] = []
+export function useEvent<TArgs = void>(): Event<TArgs> {
+  const callbacks: EventCallback<TArgs>[] = []
 
-  function off(callback: (args: TArgs) => void) {
+  function off(callback: EventCallback<TArgs>) {
     const index = callbacks.indexOf(callback)
 
     if (index !== -1)
       callbacks.splice(index, 1)
   }
 
-  function on(callback: (args: TArgs) => void) {
+  function on(callback: EventCallback<TArgs>) {
     callbacks.push(callback)
 
     return {
@@ -22,7 +35,7 @@ export function useEvent<TArgs = void>() {
     }
   }
 
-  function once(callback: (args: TArgs) => void) {
+  function once(callback: EventCallback<TArgs>) {
     const wrapper = (args: TArgs) => {
       callback(args)
       off(wrapper)
@@ -37,13 +50,9 @@ export function useEvent<TArgs = void>() {
   }
 
   return {
-    /** Подписывает на событие, с возможностью отписки. */
     on,
-    /** Подписывает на событие, с однократным выполнением. */
     once,
-    /** Отписывает указанный обработчик от прослушивания события. */
     off,
-    /** Объявляет всем подписчикам о наступлении события. */
     raise
   }
 }
