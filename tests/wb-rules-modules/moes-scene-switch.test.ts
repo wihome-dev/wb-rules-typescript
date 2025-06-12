@@ -1,28 +1,12 @@
-import { useEvent, Event } from '@wbm/event'
 import { useSceneSwitch, parseAction, Button } from '@wbm/moes-scene-switch'
+// TODO: Добавить алиас для папки тестов, например @/wb-engine.
+import { useDefineRule } from '../wb-engine'
 
-interface MqttMessage {
-  topic: string
-  value: MqttValue
-}
+const defineRule = useDefineRule()
 
-let mqttEvent: Event<MqttMessage> | undefined
-
-// Обнуляем глобальное состояние перед запуском каждого теста в этом файле.
 beforeEach(() => {
-  mqttEvent = useEvent<MqttMessage>()
-
-  global.defineRule = (variantA: RuleType | string, variantB?: RuleType) => {
-    const rule = typeof variantA !== 'string'
-      ? variantA
-      : variantB
-
-    if (rule && mqttEvent)
-      mqttEvent.on((mqtt) => {
-        if (rule.whenChanged === mqtt.topic)
-          rule.then(mqtt.value)
-      })
-  }
+  // Перезагружаем симулятор перед каждым тестом.
+  defineRule.reset()
 })
 
 test('Should be parsed only for keys of Button', () => {
@@ -47,7 +31,7 @@ test('1-st button click is handled', (done) => {
     done()
   })
 
-  mqttEvent?.raise({
+  defineRule.run({
     topic,
     value: '1_single'
   })
@@ -67,8 +51,33 @@ test('4-th button hold is handled', (done) => {
     done()
   })
 
-  mqttEvent?.raise({
+  defineRule.run({
     topic,
     value: '4_hold'
   })
+})
+
+test('Multiple buttons is handled', () => {
+  const topic = `${process.env.APP_SCENESW_1}/action`
+
+  let count = 0
+
+  const moesSwitch = useSceneSwitch({
+    deviceId: process.env.APP_SCENESW_1
+  })
+
+  moesSwitch.onLongPress(({ button }) => {
+    if (button != Button.D1)
+      return
+
+    count += 1
+  })
+
+  defineRule.run([
+    { topic, value: '1_hold' },
+    { topic, value: '1_hold' },
+    { topic, value: '1_hold' }
+  ])
+
+  expect(count).toBe(3)
 })
