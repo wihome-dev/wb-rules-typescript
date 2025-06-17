@@ -9,3 +9,11 @@ test('expect APP_NAME from ".env.test" file', () => {
 test('expect APP_SECRET from ".env" file', () => {
   expect(process.env.APP_SECRET).toBe('strong-secret')
 })
+
+test('__TEST__ global to be truthy', () => {
+  expect(__TEST__).toBeTruthy()
+})
+
+test('__DEV__ global to be truthy', () => {
+  expect(__DEV__).toBeTruthy()
+})

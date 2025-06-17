@@ -7,6 +7,10 @@ const config: Config = {
   transform: {
     ...tsJestTransformCfg
   },
+  globals: {
+    __TEST__: true,
+    __DEV__: true
+  },
   moduleNameMapper: {
     '@wb/(.*)': '<rootDir>/src/wb-rules/$1',
     '@wbm/(.*)': '<rootDir>/src/wb-rules-modules/$1'
