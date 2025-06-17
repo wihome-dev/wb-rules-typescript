@@ -5,4 +5,7 @@ const example = useExample({
   secret: process.env.APP_SECRET
 })
 
+if (__DEV__)
+  log('Development mode.')
+
 log(example.getName())
