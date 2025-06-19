@@ -1,5 +1,6 @@
 import { isString } from '@wbm/type-guards'
 import { useEvent } from '@wbm/event'
+import { getValues } from '@wbm/polyfills'
 
 /** Типизирует опции useSceneSwitch. */
 interface SceneSwitchOptions {
@@ -19,11 +20,11 @@ export enum Button {
 }
 
 // Чтобы не перечислять кнопки при каждом наступлении события.
-const buttons = Object.values(Button)
+const buttons = getValues(Button)
 
 // Type Guard для типа Button.
 function isKnownButton(value?: MqttValue): value is Button {
-  return buttons.includes(value as Button)
+  return buttons.indexOf(value as Button) !== -1
 }
 
 // TODO: убрать экспорт, когда получится реализовать тестирование неэкспортируемых элементов.
