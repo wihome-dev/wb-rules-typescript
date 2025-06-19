@@ -6,7 +6,10 @@ import replace from '@rollup/plugin-replace'
 import del from 'rollup-plugin-delete'
 
 export default {
-  input: ['src/wb-rules/*.ts'],
+  input: {
+    include: ['src/wb-rules/*.ts'],
+    exclude: ['src/wb-rules/*.disabled.ts']
+  },
   plugins: [
     multi({ preserveModules: true }),
     typescript(),
