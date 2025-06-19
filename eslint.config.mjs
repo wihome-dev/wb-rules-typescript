@@ -20,6 +20,10 @@ export default defineConfig([
   // TypeScript Overrides
   {
     files: ['**/*.ts'],
+    rules: {
+      // Правило несовместимо с wb-rules 2.0
+      '@typescript-eslint/prefer-includes': 'off'
+    },
     languageOptions: {
       parserOptions: {
         project: ['./tsconfig.eslint.json'],
