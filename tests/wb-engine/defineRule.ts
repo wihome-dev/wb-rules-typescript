@@ -1,10 +1,5 @@
 import { useEvent, Event } from '@wbm/event'
 
-interface MqttMessage {
-  topic: string
-  value?: MqttValue
-}
-
 /** Имитатор конструкции defineRule. */
 export function useDefineRule() {
   let mqttEvent: Event<MqttMessage>
@@ -20,22 +15,22 @@ export function useDefineRule() {
       if (!rule)
         return
 
-      mqttEvent.on((mqtt) => {
-        if (rule.whenChanged === mqtt.topic)
-          rule.then(mqtt.value)
+      mqttEvent.on((message) => {
+        if (rule.whenChanged == message.topic)
+          rule.then(message.value)
       })
     }
   }
 
   /** Отправляет одно сообщение */
-  function run(payload: MqttMessage): void
+  function run(message: MqttMessage): void
   /** Отправляет несколько сообщений, одно за другим */
-  function run(payload: MqttMessage[]): void
-  function run(payload: MqttMessage | MqttMessage[]): void {
-    if (!Array.isArray(payload))
-      mqttEvent.raise(payload)
+  function run(message: MqttMessage[]): void
+  function run(message: MqttMessage | MqttMessage[]): void {
+    if (!Array.isArray(message))
+      mqttEvent.raise(message)
     else
-      payload.forEach((value) => {
+      message.forEach((value) => {
         mqttEvent.raise(value)
       })
   }

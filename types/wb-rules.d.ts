@@ -365,9 +365,9 @@ declare interface String {
   xformat(...args: (string | number | boolean)[]): string
 }
 
-interface MqttTopicMessage {
+interface MqttMessage {
   topic: string
-  value: string | number | boolean
+  value: MqttValue
 }
 
 /**
@@ -377,7 +377,7 @@ interface MqttTopicMessage {
  */
 declare function trackMqtt(
   topic: string,
-  callback: (message: MqttTopicMessage) => void
+  callback: (message: MqttMessage) => void
 ): void
 
 /**
@@ -390,7 +390,7 @@ declare function trackMqtt(
  */
 declare function publish(
   topic: string,
-  payload: string | number | boolean,
+  value: MqttValue,
   QoS?: number,
   retain?: boolean
 ): void
