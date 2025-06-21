@@ -4,12 +4,6 @@ import { usePolyfills } from '@wbm/polyfills'
 
 usePolyfills()
 
-/** Типизирует опции useSceneSwitch. */
-interface SceneSwitchOptions {
-  /** Идентификатор устройства. */
-  deviceId: string
-}
-
 /**
  * Перечисление для удобной отсылки к кнопкам пульта,
  * чтобы не зашивать повсюду в код строковые константы.
@@ -54,6 +48,12 @@ interface ClickEventArgs {
   button: Button
 }
 
+/** Типизирует опции useSceneSwitch. */
+interface SceneSwitchOptions {
+  /** Идентификатор устройства. */
+  deviceId: string
+}
+
 /**
  * Построитель объекта для обработки событий сценарного пульта Moes.
  */
@@ -62,28 +62,33 @@ export function useSceneSwitch(options: SceneSwitchOptions) {
   const doubleClickEvent = useEvent<ClickEventArgs>()
   const longPressEvent = useEvent<ClickEventArgs>()
 
-  // Внутреннее правило wb-rules - создаётся на каждый экземпляр.
-  defineRule({
-    whenChanged: `${options.deviceId}/action`,
-    then: (value) => {
-      const { button, action } = parseAction(value)
+  const lastSeen = getControl(`${options.deviceId}/last_seen`)
+  const startupStamp = lastSeen.getValue()
 
-      if (!button || !action)
-        return
+  trackMqtt(`/devices/${options.deviceId}/controls/action`, (payload) => {
+    const stamp = lastSeen.getValue()
 
-      switch (action) {
-        case 'single':
-          singleClickEvent.raise({ button })
-          break
+    // Если временная метка не поменялась, игнорируем сообщение.
+    if (stamp === startupStamp)
+      return
 
-        case 'double':
-          doubleClickEvent.raise({ button })
-          break
+    const { button, action } = parseAction(payload.value)
 
-        case 'hold':
-          longPressEvent.raise({ button })
-          break
-      }
+    if (!button || !action)
+      return
+
+    switch (action) {
+      case 'single':
+        singleClickEvent.raise({ button })
+        break
+
+      case 'double':
+        doubleClickEvent.raise({ button })
+        break
+
+      case 'hold':
+        longPressEvent.raise({ button })
+        break
     }
   })
 

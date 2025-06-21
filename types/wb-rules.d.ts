@@ -4,6 +4,7 @@ declare type WbLogFunc = (
 ) => void
 
 declare interface WbLog {
+
   /**
    * Запись в лог информационного сообщения, полезного в долгосрочной перспективе.
    * @param message
@@ -12,11 +13,17 @@ declare interface WbLog {
   (message: string | undefined, ...args: (string | number | boolean)[]): void
 
   /**
+   * Запись в лог указанного значения, полезного при отладке в процессе разработки и не представляющего ценности в долгосрочной перспективе.
+   * @param value
+   */
+  debug(value: unknown): void
+
+  /**
    * Запись в лог сообщения, полезного при отладке в процессе разработки и не представляющего ценности в долгосрочной перспективе.
    * @param message
    * @param args
    */
-  debug(message: string | undefined, ...args: (string | number | boolean)[]): void
+  debug(message: unknown, ...args: (string | number | boolean)[]): void
 
   /**
    * Запись в лог информационного сообщения, полезного в долгосрочной перспективе.
@@ -37,7 +44,7 @@ declare interface WbLog {
    * @param message
    * @param args
    */
-  error(fmt: string | undefined, ...args: (string | number | boolean)[]): void
+  error(message: string | undefined, ...args: (string | number | boolean)[]): void
 }
 
 declare var log: WbLog
@@ -273,7 +280,17 @@ declare function defineVirtualDevice(
   description: DeviceDescription
 ): Device
 
-declare function getDevice(deviceName: string): Device
+/**
+ * Возвращает указанное устройство.
+ * @param deviceId Идентификатор устройства.
+ */
+declare function getDevice(deviceId: string): Device
+
+/**
+ * Возвращает указанный контрол устройства.
+ * @param path Строка в формате "deviceId/controlId"
+ */
+declare function getControl(path: string): Cell
 
 /**
  * запускает периодический таймер с указанным интервалом

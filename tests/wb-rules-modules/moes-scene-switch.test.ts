@@ -1,12 +1,14 @@
 import { useSceneSwitch, parseAction, Button } from '@wbm/moes-scene-switch'
 // TODO: Добавить алиас для папки тестов, например @/wb-engine.
-import { useDefineRule } from '../wb-engine'
+import { useGetControl, useTrackMqtt } from '../wb-engine'
 
-const defineRule = useDefineRule()
+const getControl = useGetControl()
+const trackMqtt = useTrackMqtt()
 
 beforeEach(() => {
   // Перезагружаем симулятор перед каждым тестом.
-  defineRule.reset()
+  getControl.reset()
+  trackMqtt.reset()
 })
 
 test('Should be parsed only for keys of Button', () => {
@@ -17,8 +19,9 @@ test('Should be parsed only for keys of Button', () => {
   expect(parseAction('cucumber').button).toBeUndefined()
 })
 
-test('1-st button click is handled', (done) => {
-  const topic = `${process.env.APP_SCENESW_1}/action`
+test('1st button click is handled', (done) => {
+  const topic = `/devices/${process.env.APP_SCENESW_1}/controls/action`
+  const control = `${process.env.APP_SCENESW_1}/last_seen`
 
   const moesSwitch = useSceneSwitch({
     deviceId: process.env.APP_SCENESW_1
@@ -31,14 +34,17 @@ test('1-st button click is handled', (done) => {
     done()
   })
 
-  defineRule.run({
+  getControl.setValue(control, '1750000000020')
+
+  trackMqtt.run({
     topic,
     value: '1_single'
   })
 })
 
-test('4-th button hold is handled', (done) => {
-  const topic = `${process.env.APP_SCENESW_1}/action`
+test('4th button hold is handled', (done) => {
+  const topic = `/devices/${process.env.APP_SCENESW_1}/controls/action`
+  const control = `${process.env.APP_SCENESW_1}/last_seen`
 
   const moesSwitch = useSceneSwitch({
     deviceId: process.env.APP_SCENESW_1
@@ -51,14 +57,17 @@ test('4-th button hold is handled', (done) => {
     done()
   })
 
-  defineRule.run({
+  getControl.setValue(control, '1750000000020')
+
+  trackMqtt.run({
     topic,
     value: '4_hold'
   })
 })
 
 test('Multiple buttons is handled', () => {
-  const topic = `${process.env.APP_SCENESW_1}/action`
+  const topic = `/devices/${process.env.APP_SCENESW_1}/controls/action`
+  const control = `${process.env.APP_SCENESW_1}/last_seen`
 
   let count = 0
 
@@ -73,7 +82,9 @@ test('Multiple buttons is handled', () => {
     count += 1
   })
 
-  defineRule.run([
+  getControl.setValue(control, '1750000000020')
+
+  trackMqtt.run([
     { topic, value: '1_hold' },
     { topic, value: '1_hold' },
     { topic, value: '1_hold' }
