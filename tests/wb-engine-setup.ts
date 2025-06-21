@@ -29,3 +29,7 @@ global.log = createLogger()
 global.defineRule = jest.fn()
 global.defineVirtualDevice = jest.fn()
 global.trackMqtt = jest.fn()
+global.getDevice = jest.fn(() => mock<Device>({
+  getControl: () => mock<Cell>()
+}))
+global.getControl = jest.fn()
