@@ -24,10 +24,9 @@ function isKnownButton(value?: MqttValue): value is Button {
   return buttons.indexOf(value as Button) !== -1
 }
 
-// TODO: убрать экспорт, когда получится реализовать тестирование неэкспортируемых элементов.
 /** Извлекает из текста значения, соответствующие кнопкам пульта. */
-export function parseAction(value?: MqttValue) {
-  if (!isString(value))
+function parseAction(value?: MqttValue) {
+  if (!value || !isString(value))
     return {}
 
   const matches = /^(\d)_([a-z]+)$/.exec(value)
@@ -41,6 +40,54 @@ export function parseAction(value?: MqttValue) {
     button: matches[1],
     action: matches[2]
   }
+}
+
+if (__TEST__) {
+  module.static = {}
+}
+
+interface DeviceState {
+  isReady: boolean
+}
+
+// Статический набор уже сконфигурированных пультов, со статусом готовности к работе.
+const configured = (module.static.configured ??= {}) as Record<string, DeviceState | undefined>
+
+/**
+ * Конфигурирует виртуальное устройство до того,
+ * как это сделает wb-zigbee2mqtt.
+ */
+function tryConfigure(deviceId: string) {
+  // Настройка требуется только при первом вызове.
+  if (configured[deviceId])
+    return
+
+  const state = configured[deviceId] = {
+    isReady: false
+  } as DeviceState
+
+  trackMqtt(`zigbee2mqtt/${deviceId}`, () => {
+    // Предотвращаем проверку каждого сообщения от zigbee2mqtt
+    if (state.isReady)
+      return
+
+    if (__DEV__)
+      log.info(`Configuring '${deviceId}'`)
+
+    const device = getDevice(deviceId)
+
+    if (device?.isVirtual() && !device.isControlExists('action')) {
+      device.addControl('action', {
+        type: 'text',
+        value: '',
+        readonly: true,
+        // Предотвращает отправку сохранённого значения.
+        forceDefault: true
+      })
+    }
+
+    state.isReady = true
+  })
 }
 
 /** Описывает аргументы, передаваемые в событии клика. */
@@ -57,11 +104,17 @@ interface SceneSwitchOptions {
 
 /** Построитель объекта для обработки событий сценарного пульта Moes. */
 export function useSceneSwitch(options: SceneSwitchOptions) {
+  tryConfigure(options.deviceId)
+
   const singleClickEvent = useEvent<ClickEventArgs>()
   const doubleClickEvent = useEvent<ClickEventArgs>()
   const longPressEvent = useEvent<ClickEventArgs>()
 
-  const lastSeen = getControlSafe(options.deviceId, 'last_seen')
+  const lastSeen = getControlSafe(options.deviceId, 'last_seen',
+    // Подавляет попытки обращения к устройству, которого нет
+    () => !!configured[options.deviceId]?.isReady
+  )
+
   const startupStamp = lastSeen.safe?.getValue()
 
   trackMqtt(`/devices/${options.deviceId}/controls/action`, (payload) => {
@@ -69,7 +122,8 @@ export function useSceneSwitch(options: SceneSwitchOptions) {
 
     // Если временная метка не поменялась, игнорируем сообщение.
     if (stamp === startupStamp) {
-      log.debug(`Подавление Retained-сообщения '${payload.value.toString()}' для метки '${stamp?.toString() ?? 'None'}'`)
+      if (__DEV__)
+        log.info(`Suppress retained '${payload.value.toString()}' at '${stamp?.toString() ?? 'none'}'`)
       return
     }
 

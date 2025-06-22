@@ -1,9 +1,13 @@
-import { useSceneSwitch, parseAction, Button } from '@wbm/moes-scene-switch'
+import { useSceneSwitch, Button } from '@wbm/moes-scene-switch'
 // TODO: Добавить алиас для папки тестов, например @/wb-engine.
 import { useGetControl, useTrackMqtt } from '../wb-engine'
 
 const getControl = useGetControl()
 const trackMqtt = useTrackMqtt()
+
+const deviceId = process.env.APP_SCENESW_1
+const zigbeeTopic = `zigbee2mqtt/${deviceId}`
+const topic = `/devices/${deviceId}/controls/action`
 
 beforeEach(() => {
   // Перезагружаем симулятор перед каждым тестом.
@@ -11,18 +15,7 @@ beforeEach(() => {
   trackMqtt.reset()
 })
 
-test('Should be parsed only for keys of Button', () => {
-  expect(parseAction('1_single').button).toBe(Button.D1)
-  expect(parseAction('2_single').button).toBe(Button.D2)
-  expect(parseAction('3_single').button).toBe(Button.D3)
-  expect(parseAction('4_single').button).toBe(Button.D4)
-  expect(parseAction('cucumber').button).toBeUndefined()
-})
-
 test('1st button click is handled', (done) => {
-  const deviceId = process.env.APP_SCENESW_1
-  const topic = `/devices/${deviceId}/controls/action`
-
   const moesSwitch = useSceneSwitch({
     deviceId: process.env.APP_SCENESW_1
   })
@@ -36,16 +29,13 @@ test('1st button click is handled', (done) => {
 
   getControl.setValue(deviceId, 'last_seen', '1750000000020')
 
-  trackMqtt.run({
-    topic,
-    value: '1_single'
-  })
+  trackMqtt.run([
+    { topic: zigbeeTopic, value: '' },
+    { topic, value: '1_single' }
+  ])
 })
 
 test('4th button hold is handled', (done) => {
-  const deviceId = process.env.APP_SCENESW_1
-  const topic = `/devices/${deviceId}/controls/action`
-
   const moesSwitch = useSceneSwitch({
     deviceId: process.env.APP_SCENESW_1
   })
@@ -59,16 +49,13 @@ test('4th button hold is handled', (done) => {
 
   getControl.setValue(deviceId, 'last_seen', '1750000000020')
 
-  trackMqtt.run({
-    topic,
-    value: '4_hold'
-  })
+  trackMqtt.run([
+    { topic: zigbeeTopic, value: '' },
+    { topic, value: '4_hold' }
+  ])
 })
 
 test('Multiple buttons is handled', () => {
-  const deviceId = process.env.APP_SCENESW_1
-  const topic = `/devices/${deviceId}/controls/action`
-
   let count = 0
 
   const moesSwitch = useSceneSwitch({
@@ -88,6 +75,7 @@ test('Multiple buttons is handled', () => {
   ])
 
   trackMqtt.run([
+    { topic: zigbeeTopic, value: '' },
     { topic, value: '1_hold' },
     { topic, value: '1_hold' },
     { topic, value: '1_hold' }
