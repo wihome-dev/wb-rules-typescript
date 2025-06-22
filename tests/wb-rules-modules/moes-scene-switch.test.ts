@@ -20,8 +20,8 @@ test('Should be parsed only for keys of Button', () => {
 })
 
 test('1st button click is handled', (done) => {
-  const topic = `/devices/${process.env.APP_SCENESW_1}/controls/action`
-  const control = `${process.env.APP_SCENESW_1}/last_seen`
+  const deviceId = process.env.APP_SCENESW_1
+  const topic = `/devices/${deviceId}/controls/action`
 
   const moesSwitch = useSceneSwitch({
     deviceId: process.env.APP_SCENESW_1
@@ -34,7 +34,7 @@ test('1st button click is handled', (done) => {
     done()
   })
 
-  getControl.setValue(control, '1750000000020')
+  getControl.setValue(deviceId, 'last_seen', '1750000000020')
 
   trackMqtt.run({
     topic,
@@ -43,8 +43,8 @@ test('1st button click is handled', (done) => {
 })
 
 test('4th button hold is handled', (done) => {
-  const topic = `/devices/${process.env.APP_SCENESW_1}/controls/action`
-  const control = `${process.env.APP_SCENESW_1}/last_seen`
+  const deviceId = process.env.APP_SCENESW_1
+  const topic = `/devices/${deviceId}/controls/action`
 
   const moesSwitch = useSceneSwitch({
     deviceId: process.env.APP_SCENESW_1
@@ -57,7 +57,7 @@ test('4th button hold is handled', (done) => {
     done()
   })
 
-  getControl.setValue(control, '1750000000020')
+  getControl.setValue(deviceId, 'last_seen', '1750000000020')
 
   trackMqtt.run({
     topic,
@@ -66,8 +66,8 @@ test('4th button hold is handled', (done) => {
 })
 
 test('Multiple buttons is handled', () => {
-  const topic = `/devices/${process.env.APP_SCENESW_1}/controls/action`
-  const control = `${process.env.APP_SCENESW_1}/last_seen`
+  const deviceId = process.env.APP_SCENESW_1
+  const topic = `/devices/${deviceId}/controls/action`
 
   let count = 0
 
@@ -82,7 +82,10 @@ test('Multiple buttons is handled', () => {
     count += 1
   })
 
-  getControl.setValue(control, '1750000000020')
+  getControl.setValues([
+    { deviceId, controlId: 'last_seen', value: '1750000000020' },
+    { deviceId, controlId: 'battery', value: '100' }
+  ])
 
   trackMqtt.run([
     { topic, value: '1_hold' },

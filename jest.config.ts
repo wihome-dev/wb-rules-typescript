@@ -18,7 +18,8 @@ const config: Config = {
   setupFiles: [
     '<rootDir>/tests/dotenv-setup.ts',
     '<rootDir>/tests/wb-engine-setup.ts'
-  ]
+  ],
+  testTimeout: 500
 }
 
 export default config

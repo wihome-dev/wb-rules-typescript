@@ -6,7 +6,7 @@
     "outDir": "./dist",
     "paths": {
       "@wbm*": [
-        "./src/wb-rules-modules*"
+        "./src/wb-rules-modules/*"
       ]
     },
     "allowJs": true,
@@ -17,7 +17,7 @@
   },
   "include": [
     "src/wb-rules/*",
-    "src/wb-rules-modules/*",
+    "src/wb-rules-modules/**/*",
     "types/*"
   ],
   "tsc-alias": {

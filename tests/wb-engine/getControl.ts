@@ -1,5 +1,6 @@
 import { mock } from 'jest-mock-extended'
 
+/** Имитатор конструкции getControl. */
 export function useGetControl() {
   let values: Record<string, MqttValue> = {}
 
@@ -13,14 +14,21 @@ export function useGetControl() {
     }
   }
 
-  function setValue(devicePath: string, value: MqttValue) {
-    values[devicePath] = value
+  function setValue(deviceId: string, controlId: string, value: MqttValue) {
+    values[`${deviceId}/${controlId}`] = value
+  }
+
+  function setValues(presets: { deviceId: string, controlId: string, value: MqttValue }[]) {
+    presets.forEach((preset) => {
+      values[`${preset.deviceId}/${preset.controlId}`] = preset.value
+    })
   }
 
   reset()
 
   return {
     reset,
-    setValue
+    setValue,
+    setValues
   }
 }

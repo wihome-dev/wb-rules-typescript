@@ -51,7 +51,7 @@ declare var log: WbLog
 
 declare type WbDevControl = Record<string, unknown>
 
-declare type WbDev = Record<string, WbDevControl>
+declare type WbDev = Record<string, WbDevControl | undefined>
 
 /**
  * Объект доступа к MQTT-топикам устройства
@@ -281,16 +281,16 @@ declare function defineVirtualDevice(
 ): Device
 
 /**
- * Возвращает указанное устройство.
+ * Позволяет получить объект для работы с указанным устройством.
  * @param deviceId Идентификатор устройства.
  */
-declare function getDevice(deviceId: string): Device
+declare function getDevice(deviceId: string): Device | undefined
 
 /**
- * Возвращает указанный контрол устройства.
+ * Позволяет получить объект для работы с указанным контролом устройства.
  * @param path Строка в формате "deviceId/controlId"
  */
-declare function getControl(path: string): Cell
+declare function getControl(path: string): Cell | undefined
 
 /**
  * запускает периодический таймер с указанным интервалом

@@ -1,3 +1,4 @@
+import { getControlSafe } from '@wbm/core'
 import { isString } from '@wbm/type-guards'
 import { useEvent } from '@wbm/event'
 import { usePolyfills } from '@wbm/polyfills'
@@ -54,23 +55,23 @@ interface SceneSwitchOptions {
   deviceId: string
 }
 
-/**
- * Построитель объекта для обработки событий сценарного пульта Moes.
- */
+/** Построитель объекта для обработки событий сценарного пульта Moes. */
 export function useSceneSwitch(options: SceneSwitchOptions) {
   const singleClickEvent = useEvent<ClickEventArgs>()
   const doubleClickEvent = useEvent<ClickEventArgs>()
   const longPressEvent = useEvent<ClickEventArgs>()
 
-  const lastSeen = getControl(`${options.deviceId}/last_seen`)
-  const startupStamp = lastSeen.getValue()
+  const lastSeen = getControlSafe(options.deviceId, 'last_seen')
+  const startupStamp = lastSeen.safe?.getValue()
 
   trackMqtt(`/devices/${options.deviceId}/controls/action`, (payload) => {
-    const stamp = lastSeen.getValue()
+    const stamp = lastSeen.safe?.getValue()
 
     // Если временная метка не поменялась, игнорируем сообщение.
-    if (stamp === startupStamp)
+    if (stamp === startupStamp) {
+      log.debug(`Подавление Retained-сообщения '${payload.value.toString()}' для метки '${stamp?.toString() ?? 'None'}'`)
       return
+    }
 
     const { button, action } = parseAction(payload.value)
 
