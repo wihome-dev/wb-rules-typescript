@@ -11,7 +11,7 @@ import { mock } from 'jest-mock-extended'
 // внештатных ситуаций и оценки работы алгоритма
 // в этих условиях.
 
-// **Важно!** Не передаётся в rewire. Задача требует решения.
+// TODO: Не передаётся в rewire. Задача требует решения.
 
 const createLogger = () => {
   const logger: WbLog = jest.fn() as WbLogFunc as WbLog
@@ -24,12 +24,12 @@ const createLogger = () => {
   return logger
 }
 
-global.dev = mock<WbDev>()
 global.log = createLogger()
-global.defineRule = jest.fn()
+global.dev = mock<WbDev>()
 global.defineVirtualDevice = jest.fn()
-global.trackMqtt = jest.fn()
 global.getDevice = jest.fn(() => mock<Device>({
   getControl: () => mock<Cell>()
 }))
 global.getControl = jest.fn()
+global.trackMqtt = jest.fn()
+global.defineRule = jest.fn()

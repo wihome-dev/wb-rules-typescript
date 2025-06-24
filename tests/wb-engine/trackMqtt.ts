@@ -1,7 +1,12 @@
+import { SimulatorInstance } from './types'
 import { useEvent, Event } from '@wbm/event'
 
-/** Имитатор конструкции trackMqtt. */
-export function useTrackMqtt() {
+export interface TrackMqttSimulator extends SimulatorInstance {
+  /** Отправляет одно или несколько сообщений. */
+  run(payload: MqttMessage | MqttMessage[]): void
+}
+
+function createInstance(): TrackMqttSimulator {
   let mqttEvent: Event<MqttMessage>
 
   function reset() {
@@ -15,16 +20,12 @@ export function useTrackMqtt() {
     }
   }
 
-  /** Отправляет одно сообщение */
-  function run(message: MqttMessage): void
-  /** Отправляет несколько сообщений, одно за другим */
-  function run(message: MqttMessage[]): void
-  function run(message: MqttMessage | MqttMessage[]): void {
-    if (!Array.isArray(message))
-      mqttEvent.raise(message)
+  function run(payload: MqttMessage | MqttMessage[]): void {
+    if (!Array.isArray(payload))
+      mqttEvent.raise(payload)
     else
-      message.forEach((value) => {
-        mqttEvent.raise(value)
+      payload.forEach((item) => {
+        mqttEvent.raise(item)
       })
   }
 
@@ -34,4 +35,11 @@ export function useTrackMqtt() {
     reset,
     run
   }
+}
+
+// let instance: TrackMqttSimulator | undefined
+
+/** Имитатор конструкции trackMqtt. */
+export function useTrackMqtt() {
+  return /* instance ??= */ createInstance()
 }
