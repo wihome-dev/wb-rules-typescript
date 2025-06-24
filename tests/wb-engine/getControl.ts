@@ -1,7 +1,15 @@
+import { SimulatorInstance } from './types'
 import { mock } from 'jest-mock-extended'
 
-/** Имитатор конструкции getControl. */
-export function useGetControl() {
+/** Интерфейс имитатора конструкции `getControl`. */
+export interface GetControlSimulator extends SimulatorInstance {
+  /** Устанавливает значение для указанного контрола. */
+  setValue(deviceId: string, controlId: string, value: MqttValue): void
+  /** Устанавливает набор значений для различных контролов. */
+  setValues(presets: { deviceId: string, controlId: string, value: MqttValue }[]): void
+}
+
+function createInstance(): GetControlSimulator {
   let values: Record<string, MqttValue> = {}
 
   function reset() {
@@ -31,4 +39,11 @@ export function useGetControl() {
     setValue,
     setValues
   }
+}
+
+let instance: GetControlSimulator | undefined
+
+/** Имитатор конструкции `getControl`. */
+export function useGetControl() {
+  return instance ??= createInstance()
 }

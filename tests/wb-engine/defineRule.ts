@@ -1,3 +1,4 @@
+import { SimulatorInstance } from './types'
 import { useEvent, Event } from '@wbm/event'
 
 class SameTopicValueError extends Error {
@@ -12,19 +13,21 @@ class SameTopicValueError extends Error {
   }
 }
 
-interface DefineRuleOptions {
+export interface DefineRuleOptions {
   /**
    * Отключает защиту от расхождения в поведении с настоящей функцией `defineRule`.
    *
-   * При использовании `whenChanged`, контроллер не отправляет одно и то же значение дважды.
+   * Контроллер не отправляет одно и то же значение дважды при использовании `whenChanged`.
    */
-  allowSameValue: boolean
+  allowSameValue?: boolean
 }
 
-/** Имитатор конструкции defineRule. */
-export function useDefineRule(options: DefineRuleOptions = {
-  allowSameValue: false
-}) {
+export interface DefineRuleSimulator extends SimulatorInstance {
+  /** Отправляет одно или несколько сообщений. */
+  run(payload: MqttMessage | MqttMessage[]): void
+}
+
+function createInstance(options: DefineRuleOptions): DefineRuleSimulator {
   let mqttEvent: Event<MqttMessage>
   let values: Record<string, MqttValue> = {}
 
@@ -62,17 +65,14 @@ export function useDefineRule(options: DefineRuleOptions = {
     return true
   }
 
-  /** Отправляет одно сообщение */
-  function run(message: MqttMessage): void
-  /** Отправляет несколько сообщений, одно за другим */
-  function run(message: MqttMessage[]): void
-  function run(message: MqttMessage | MqttMessage[]): void {
-    if (!Array.isArray(message)) {
-      if (isValueChanged(message))
-        mqttEvent.raise(message)
+  /** Отправляет одно или несколько сообщений */
+  function run(payload: MqttMessage | MqttMessage[]): void {
+    if (!Array.isArray(payload)) {
+      if (isValueChanged(payload))
+        mqttEvent.raise(payload)
     }
     else {
-      message.forEach((item) => {
+      payload.forEach((item) => {
         if (isValueChanged(item))
           mqttEvent.raise(item)
       })
@@ -85,4 +85,11 @@ export function useDefineRule(options: DefineRuleOptions = {
     reset,
     run
   }
+}
+
+// let instance: DefineRuleSimulator | undefined
+
+/** Имитатор конструкции defineRule. */
+export function useDefineRule(options: DefineRuleOptions = {}) {
+  return /* instance ??= */ createInstance(options)
 }

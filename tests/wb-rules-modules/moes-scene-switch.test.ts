@@ -1,24 +1,24 @@
 import { useSceneSwitch, Button } from '@wbm/moes-scene-switch'
 // TODO: Добавить алиас для папки тестов, например @/wb-engine.
-import { useGetControl, useTrackMqtt } from '../wb-engine'
+import { useSimulator } from '../wb-engine'
 
-const getControl = useGetControl()
-const trackMqtt = useTrackMqtt()
+const simulator = useSimulator()
 
 const deviceId = process.env.APP_SCENESW_1
-const zigbeeTopic = `zigbee2mqtt/${deviceId}`
 const topic = `/devices/${deviceId}/controls/action`
+const zigbeeTopic = `zigbee2mqtt/${deviceId}`
 
 beforeEach(() => {
   // Перезагружаем симулятор перед каждым тестом.
-  getControl.reset()
-  trackMqtt.reset()
+  simulator.reset()
 })
 
 test('1st button click is handled', (done) => {
-  const moesSwitch = useSceneSwitch({
-    deviceId: process.env.APP_SCENESW_1
-  })
+  // Создаёт имитацию виртуального zigbee-устройства
+  simulator.getDevice
+    .setZigbeeDevice(deviceId)
+
+  const moesSwitch = useSceneSwitch({ deviceId })
 
   moesSwitch.onSingleClick(({ button }) => {
     // Проверяем условие корректного парсинга кнопки.
@@ -27,18 +27,23 @@ test('1st button click is handled', (done) => {
     done()
   })
 
-  getControl.setValue(deviceId, 'last_seen', '1750000000020')
+  simulator.getControl
+    .setValue(deviceId, 'last_seen', '1750000000020')
 
-  trackMqtt.run([
-    { topic: zigbeeTopic, value: '' },
-    { topic, value: '1_single' }
-  ])
+  simulator.trackMqtt
+    .run([
+      // TODO: Прогрев имитации wb-zigbee2mqtt, убрать куда-нибудь - оно одинаково для всех z2m
+      { topic: zigbeeTopic, value: '' },
+      // Исполнение основной команды - имитация нажатия кнопки беспроводного пульта.
+      { topic, value: '1_single' }
+    ])
 })
 
 test('4th button hold is handled', (done) => {
-  const moesSwitch = useSceneSwitch({
-    deviceId: process.env.APP_SCENESW_1
-  })
+  simulator.getDevice
+    .setZigbeeDevice(deviceId)
+
+  const moesSwitch = useSceneSwitch({ deviceId })
 
   moesSwitch.onLongPress(({ button }) => {
     // Проверяем условие корректного парсинга кнопки.
@@ -47,20 +52,23 @@ test('4th button hold is handled', (done) => {
     done()
   })
 
-  getControl.setValue(deviceId, 'last_seen', '1750000000020')
+  simulator.getControl
+    .setValue(deviceId, 'last_seen', '1750000000020')
 
-  trackMqtt.run([
-    { topic: zigbeeTopic, value: '' },
-    { topic, value: '4_hold' }
-  ])
+  simulator.trackMqtt
+    .run([
+      { topic: zigbeeTopic, value: '' },
+      { topic, value: '4_hold' }
+    ])
 })
 
 test('Multiple buttons is handled', () => {
+  simulator.getDevice
+    .setZigbeeDevice(deviceId)
+
   let count = 0
 
-  const moesSwitch = useSceneSwitch({
-    deviceId: process.env.APP_SCENESW_1
-  })
+  const moesSwitch = useSceneSwitch({ deviceId })
 
   moesSwitch.onLongPress(({ button }) => {
     if (button != Button.D1)
@@ -69,17 +77,19 @@ test('Multiple buttons is handled', () => {
     count += 1
   })
 
-  getControl.setValues([
-    { deviceId, controlId: 'last_seen', value: '1750000000020' },
-    { deviceId, controlId: 'battery', value: '100' }
-  ])
+  simulator.getControl
+    .setValues([
+      { deviceId, controlId: 'last_seen', value: '1750000000020' },
+      { deviceId, controlId: 'battery', value: '100' }
+    ])
 
-  trackMqtt.run([
-    { topic: zigbeeTopic, value: '' },
-    { topic, value: '1_hold' },
-    { topic, value: '1_hold' },
-    { topic, value: '1_hold' }
-  ])
+  simulator.trackMqtt
+    .run([
+      { topic: zigbeeTopic, value: '' },
+      { topic, value: '1_hold' },
+      { topic, value: '1_hold' },
+      { topic, value: '1_hold' }
+    ])
 
   expect(count).toBe(3)
 })

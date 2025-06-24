@@ -1,3 +1,5 @@
 export * from './defineRule'
 export * from './trackMqtt'
+export * from './getDevice'
 export * from './getControl'
+export * from './simulator'
