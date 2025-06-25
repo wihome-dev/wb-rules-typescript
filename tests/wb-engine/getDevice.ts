@@ -1,9 +1,12 @@
-import { mock } from 'jest-mock-extended'
 import { SimulatorInstance } from './types'
 
+export interface ControlValue {
+  controlId: string
+  value: MqttValue
+}
+
 export interface GetDeviceSimulator extends SimulatorInstance {
-  setDevice(deviceId: string, device: Device): void
-  setZigbeeDevice(deviceId: string): void
+  defineDevice(deviceId: string, device: Device): void
 }
 
 function createSimulator(): GetDeviceSimulator {
@@ -18,18 +21,8 @@ function createSimulator(): GetDeviceSimulator {
 
   return {
     reset,
-    setDevice(deviceId: string, device: Device) {
+    defineDevice(deviceId: string, device: Device) {
       devices[deviceId] = device
-    },
-    setZigbeeDevice(deviceId: string) {
-      devices[deviceId] = mock<Device>({
-        isVirtual() {
-          return true
-        },
-        isControlExists() {
-          return false
-        }
-      })
     }
   }
 }
