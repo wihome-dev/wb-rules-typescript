@@ -1,12 +1,6 @@
-import type { Config } from 'jest'
-import { createDefaultPreset } from 'ts-jest'
-
-const tsJestTransformCfg = createDefaultPreset().transform
-
-const config: Config = {
-  transform: {
-    ...tsJestTransformCfg
-  },
+/** @type {import('jest').Config} */
+const config = {
+  preset: 'ts-jest',
   globals: {
     __TEST__: true,
     __DEV__: true

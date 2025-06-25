@@ -4,9 +4,9 @@ import { mock } from 'jest-mock-extended'
 /** Интерфейс имитатора конструкции `getControl`. */
 export interface GetControlSimulator extends SimulatorInstance {
   /** Устанавливает значение для указанного контрола. */
-  setValue(deviceId: string, controlId: string, value: MqttValue): void
+  defineValue(deviceId: string, controlId: string, value: MqttValue): void
   /** Устанавливает набор значений для различных контролов. */
-  setValues(presets: { deviceId: string, controlId: string, value: MqttValue }[]): void
+  defineValues(presets: { deviceId: string, controlId: string, value: MqttValue }[]): void
 }
 
 function createInstance(): GetControlSimulator {
@@ -22,11 +22,11 @@ function createInstance(): GetControlSimulator {
     }
   }
 
-  function setValue(deviceId: string, controlId: string, value: MqttValue) {
+  function defineValue(deviceId: string, controlId: string, value: MqttValue) {
     values[`${deviceId}/${controlId}`] = value
   }
 
-  function setValues(presets: { deviceId: string, controlId: string, value: MqttValue }[]) {
+  function defineValues(presets: { deviceId: string, controlId: string, value: MqttValue }[]) {
     presets.forEach((preset) => {
       values[`${preset.deviceId}/${preset.controlId}`] = preset.value
     })
@@ -36,8 +36,8 @@ function createInstance(): GetControlSimulator {
 
   return {
     reset,
-    setValue,
-    setValues
+    defineValue,
+    defineValues
   }
 }
 

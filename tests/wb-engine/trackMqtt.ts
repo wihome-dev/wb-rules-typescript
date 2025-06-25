@@ -37,9 +37,9 @@ function createInstance(): TrackMqttSimulator {
   }
 }
 
-// let instance: TrackMqttSimulator | undefined
+let instance: TrackMqttSimulator | undefined
 
 /** Имитатор конструкции trackMqtt. */
 export function useTrackMqtt() {
-  return /* instance ??= */ createInstance()
+  return instance ??= createInstance()
 }
