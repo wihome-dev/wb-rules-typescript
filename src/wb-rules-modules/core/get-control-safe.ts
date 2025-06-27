@@ -1,27 +1,4 @@
-import type { DeviceContext } from './setupDevice'
-
-/**
- * Позволяет получить объект для работы с указанным устройством.
- * @param deviceId Идентификатор устройства.
- *
- */
-export function getDeviceSafe(
-  deviceId: string,
-  isReadyFunc = () => true
-) {
-  let device: Device | undefined
-
-  return {
-    /** Возвращает существующий объект или пытается найти, если его ещё нет. */
-    get safe() {
-      return device ?? (
-        isReadyFunc()
-          ? device = getDevice(deviceId)
-          : undefined
-      )
-    }
-  }
-}
+import type { DeviceContext } from '@wbm/core/types'
 
 export interface CellSafe {
   safe: Cell | undefined

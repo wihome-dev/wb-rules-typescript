@@ -1,9 +1,9 @@
 import { SimulatorInstance } from './types'
-import { useGetDevice, GetDeviceSimulator } from './getDevice'
-import { useGetControl, GetControlSimulator } from './getControl'
-import { useTrackMqtt, TrackMqttSimulator } from './trackMqtt'
-import { useDefineRule, DefineRuleSimulator, DefineRuleOptions } from './defineRule'
-import { defineZigbeeDevice, ZigbeeDevice } from './defineZigbeeDevice'
+import { useGetDevice, GetDeviceSimulator } from './get-device'
+import { useGetControl, GetControlSimulator } from './get-control'
+import { useTrackMqtt, TrackMqttSimulator } from './track-mqtt'
+import { useDefineRule, DefineRuleSimulator, DefineRuleOptions } from './define-rule'
+import { defineZigbeeDevice, ZigbeeDevice } from './define-device'
 
 interface CoreSimulator extends SimulatorInstance {
   get getDevice(): GetDeviceSimulator
