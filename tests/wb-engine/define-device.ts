@@ -1,7 +1,7 @@
 import { mock } from 'jest-mock-extended'
-import { useGetDevice } from './getDevice'
-import { useGetControl } from './getControl'
-import { useTrackMqtt } from './trackMqtt'
+import { useGetDevice } from './get-device'
+import { useGetControl } from './get-control'
+import { useTrackMqtt } from './track-mqtt'
 
 export interface ZigbeeDevice {
   withLastSeen(value: string): ZigbeeDevice

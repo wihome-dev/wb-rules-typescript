@@ -8,6 +8,15 @@
 [![GitHub Repo Stars](https://img.shields.io/github/stars/wihome-dev/wb-rules-typescript?color=594ae2&style=flat-square&logo=github)](https://github.com/wihome-dev/wb-rules-typescript/stargazers)
 [![GitHub Last Commit](https://img.shields.io/github/last-commit/wihome-dev/wb-rules-typescript?color=594ae2&style=flat-square&logo=github)](https://github.com/wihome-dev/wb-rules-typescript)
 
+## Фреймворк «Артена»
+Дальнейшее развитие идеи привело к появлению модулей правил, которые расширяют подходы к разработке:
+- событийная модель - обеспечивает реакцию на изменения,
+- хранилище состояний - надстройка над `module.static`,
+- имитатор запуска на контроллере - для юнит-тестов,
+- контролы устройств в виде плагинов - для передачи функционала без дублирования кода.
+
+Использование модулей встроенного фреймворка является опциональным - стандартные конструкции движка wb-rules по-прежнему на месте и готовы к работе.
+
 ## Начало работы
 
 Потребуется предварительно установить nodejs в варианте LTS и менеджер пакетов yarn.
@@ -21,7 +30,7 @@
 <b>Примечание:</b><br/>
 в статьях о разработке правил целевой директорией в системе Windows является `D:\repos\wirenboard`.
 
-Ветка [latest](https://github.com/wihome-dev/wb-rules-typescript/tree/latest) является экспериментальной и может опережать ход повествования. Актуальная версия по материалам статей находится в ветке [babel-stable](https://github.com/wihome-dev/wb-rules-typescript/tree/babel-stable).
+Ветка [latest](https://github.com/wihome-dev/wb-rules-typescript/tree/latest) является экспериментальной и может опережать ход повествования.
 
 ## Полезные ссылки
 

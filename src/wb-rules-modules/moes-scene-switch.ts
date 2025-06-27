@@ -1,7 +1,8 @@
-import { getControlSafe, setupZigbeeDevice } from '@wbm/core'
+import { defineZigbeeDevice } from '@wbm/define-device'
 import { isString } from '@wbm/type-guards'
 import { useEvent } from '@wbm/event'
 import { usePolyfills } from '@wbm/polyfills'
+import { batteryPlugin } from '@wbm/plugins'
 
 usePolyfills()
 
@@ -52,41 +53,41 @@ interface ClickEventArgs {
 interface SceneSwitchOptions {
   /** Идентификатор устройства. */
   deviceId: string
+  battery?: {
+    lowLevel?: number
+    criticalLevel?: number
+  }
 }
 
 /** Построитель объекта для обработки событий сценарного пульта Moes. */
 export function useSceneSwitch(options: SceneSwitchOptions) {
   // Настраивает контролы устройства.
-  const context = setupZigbeeDevice(options.deviceId, ({ setControl }) => {
-    // Перезаписывает определение контрола.
-    setControl('action', {
-      type: 'text',
-      value: '',
-      readonly: true,
-      // Предотвращает отправку сохранённого значения.
-      forceDefault: true
-    })
+  const device = defineZigbeeDevice(options.deviceId, {
+    setup: ({ setControl }) => {
+      // Перезаписывает определение контрола.
+      setControl('action', {
+        type: 'text',
+        value: '',
+        readonly: true,
+        // Предотвращает отправку сохранённого значения.
+        forceDefault: true
+      })
+    },
+    plugins: [
+      // Расширяем контекст поддержкой работы с батареей устройства
+      batteryPlugin({
+        lowLevel: options.battery?.lowLevel,
+        criticalLevel: options.battery?.criticalLevel
+      })
+    ]
   })
-
-  // Подавляет попытки обращения к устройству, которого нет
-  const lastSeen = getControlSafe(context, 'last_seen')
-  const startupStamp = lastSeen.safe?.getValue()
 
   const singleClickEvent = useEvent<ClickEventArgs>()
   const doubleClickEvent = useEvent<ClickEventArgs>()
   const longPressEvent = useEvent<ClickEventArgs>()
 
-  trackMqtt(`/devices/${options.deviceId}/controls/action`, (payload) => {
-    const stamp = lastSeen.safe?.getValue()
-
-    // Если временная метка не поменялась, игнорируем сообщение.
-    if (stamp === startupStamp) {
-      if (__DEV__)
-        log.info(`Suppress retained '${payload.value.toString()}' at '${stamp?.toString() ?? 'none'}'`)
-      return
-    }
-
-    const { button, action } = parseAction(payload.value)
+  device.track('action', (newValue) => {
+    const { button, action } = parseAction(newValue)
 
     if (!button || !action)
       return
@@ -107,6 +108,14 @@ export function useSceneSwitch(options: SceneSwitchOptions) {
   })
 
   return {
+    battery: {
+      get level() {
+        return device.battery.level
+      },
+      onLowLevel: device.battery.onLowLevel,
+      onCriticalLevel: device.battery.onCriticalLevel
+    },
+
     /**
      * Событие одинарного нажатия кнопки.
      * @returns Объект с возможностью отписки от события.

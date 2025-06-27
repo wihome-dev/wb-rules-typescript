@@ -74,3 +74,49 @@ test('Multiple buttons is handled', () => {
 
   expect(count).toBe(3)
 })
+
+test('BatteryPlugin Low Battery Level event', (done) => {
+  const moesSwitch = useSceneSwitch({
+    deviceId,
+    battery: {
+      lowLevel: 20
+    }
+  })
+
+  moesSwitch.battery.onLowLevel((level) => {
+    expect(level).toBe(10)
+    done()
+  })
+
+  // Создаёт имитацию виртуального zigbee-устройства
+  simulator.defineZigbeeDevice(deviceId)
+    // Устанавливает метку
+    .withLastSeen('1750000000020')
+    // Отправляет сигнал о готовности к работе.
+    .publishIsReady()
+    // Отправляет три сообщения о нажатии кнопки.
+    .publish('battery', '10')
+})
+
+test('BatteryPlugin Critical Battery Level event', (done) => {
+  const moesSwitch = useSceneSwitch({
+    deviceId,
+    battery: {
+      criticalLevel: 10
+    }
+  })
+
+  moesSwitch.battery.onCriticalLevel((level) => {
+    expect(level).toBe(5)
+    done()
+  })
+
+  // Создаёт имитацию виртуального zigbee-устройства
+  simulator.defineZigbeeDevice(deviceId)
+    // Устанавливает метку
+    .withLastSeen('1750000000020')
+    // Отправляет сигнал о готовности к работе.
+    .publishIsReady()
+    // Отправляет три сообщения о нажатии кнопки.
+    .publish('battery', '5')
+})
