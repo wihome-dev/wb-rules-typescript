@@ -16,10 +16,23 @@ interface DeviceSetupOptions {
   ) => void
 }
 
-interface DefineDeviceOptions<TPlugins> {
+/**
+ * Извлекает типы возвращаемых функциями в массиве значений
+ * в виде пересечения.
+ *
+ * */
+type IntersectReturnTypes<TArray>
+  = TArray extends [(...args: unknown[]) => infer TReturn, ...infer TRest]
+    ? TReturn & IntersectReturnTypes<TRest>
+    : object
+
+interface DefineDeviceOptions<TPlugins extends DevicePlugin[]> {
   setup?: (options: DeviceSetupOptions) => void
-  plugins?: TPlugins
+  plugins?: [...TPlugins]
 }
+
+type DeviceWithPlugins<TPlugins extends DevicePlugin[]>
+  = IntersectReturnTypes<[...TPlugins]>
 
 interface DeviceWithContext {
   /** Контекст устройства. */
@@ -31,6 +44,9 @@ interface DeviceWithContext {
     callback: (newValue: MqttValue) => void
   ) => void
 }
+
+type Device<TPlugins extends DevicePlugin[]> =
+  DeviceWithContext & DeviceWithPlugins<TPlugins>
 
 const { assign } = Object
 
@@ -110,19 +126,7 @@ function configureContext(
   return context
 }
 
-type PluginsArray = DevicePlugin[]
-
-type DeviceWithPlugins<TPlugins> = TPlugins extends (infer TItem)[]
-  ? (TItem extends (...args: infer P) => infer R
-      ? R
-      : never
-    )
-  : never
-
-type Device<TPlugins> =
-  DeviceWithContext & DeviceWithPlugins<TPlugins>
-
-export function defineZigbeeDevice<TPlugins extends PluginsArray>(
+export function defineZigbeeDevice<TPlugins extends DevicePlugin[]>(
   deviceId: string,
   options: DefineDeviceOptions<TPlugins> = {}
 ): Device<TPlugins> {
