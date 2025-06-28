@@ -37,7 +37,7 @@ export function defineZigbeeDevice(deviceId: string): ZigbeeDevice {
     },
 
     publishIsReady() {
-      trackMqtt.run({
+      trackMqtt.publish({
         topic: `zigbee2mqtt/${deviceId}`,
         value: ''
       })
@@ -46,7 +46,7 @@ export function defineZigbeeDevice(deviceId: string): ZigbeeDevice {
     },
 
     publish(controlId: string, value: MqttValue) {
-      trackMqtt.run({
+      trackMqtt.publish({
         topic: `/devices/${deviceId}/controls/${controlId}`,
         value
       })

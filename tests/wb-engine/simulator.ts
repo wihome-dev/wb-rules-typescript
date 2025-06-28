@@ -4,6 +4,33 @@ import { useGetControl, GetControlSimulator } from './get-control'
 import { useTrackMqtt, TrackMqttSimulator } from './track-mqtt'
 import { useDefineRule, DefineRuleSimulator, DefineRuleOptions } from './define-rule'
 import { defineZigbeeDevice, ZigbeeDevice } from './define-device'
+import type { DevicePlugin, PluginContext, TrackFunc } from '@wbm/core'
+
+type ExtractedPlugin<TPlugin>
+  = TPlugin extends (...args: infer P) => infer R ? R : never
+
+export function useDevicePlugin<TPlugin extends DevicePlugin>(
+  deviceId: string,
+  plugin: TPlugin
+): ExtractedPlugin<TPlugin> {
+  const track: TrackFunc = (controlId, callback) => {
+    trackMqtt(
+      `/devices/${deviceId}/controls/${controlId}`,
+      ({ value }) => {
+        callback(value)
+      })
+  }
+
+  const context: PluginContext = {
+    device: {
+      id: deviceId,
+      isReady: true
+    },
+    track
+  }
+
+  return plugin(context) as ExtractedPlugin<TPlugin>
+}
 
 interface CoreSimulator extends SimulatorInstance {
   get getDevice(): GetDeviceSimulator
@@ -11,6 +38,10 @@ interface CoreSimulator extends SimulatorInstance {
   get defineRule(): DefineRuleSimulator
   get trackMqtt(): TrackMqttSimulator
   defineZigbeeDevice(deviceId: string): ZigbeeDevice
+  useDevicePlugin<TPlugin extends DevicePlugin>(
+    deviceId: string,
+    plugin: TPlugin
+  ): ExtractedPlugin<TPlugin>
 }
 
 interface CoreSimulatorOptions {
@@ -48,7 +79,8 @@ function createSimulator(options: CoreSimulatorOptions): CoreSimulator {
     getControl,
     defineRule,
     trackMqtt,
-    defineZigbeeDevice
+    defineZigbeeDevice,
+    useDevicePlugin
   }
 }
 

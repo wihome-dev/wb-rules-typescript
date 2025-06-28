@@ -1,9 +1,14 @@
 import { SimulatorInstance } from './types'
 import { useEvent, Event } from '@wbm/event'
 
+interface WithDevice {
+  publish(controlId: string, value: MqttValue): WithDevice
+}
+
 export interface TrackMqttSimulator extends SimulatorInstance {
   /** Отправляет одно или несколько сообщений. */
-  run(payload: MqttMessage | MqttMessage[]): void
+  publish(payload: MqttMessage | MqttMessage[]): void
+  withDevice(deviceId: string): WithDevice
 }
 
 function createInstance(): TrackMqttSimulator {
@@ -20,7 +25,7 @@ function createInstance(): TrackMqttSimulator {
     }
   }
 
-  function run(payload: MqttMessage | MqttMessage[]): void {
+  function publish(payload: MqttMessage | MqttMessage[]): void {
     if (!Array.isArray(payload))
       mqttEvent.raise(payload)
     else
@@ -29,11 +34,25 @@ function createInstance(): TrackMqttSimulator {
       })
   }
 
+  function withDevice(deviceId: string): WithDevice {
+    return {
+      publish(controlId: string, value: MqttValue) {
+        mqttEvent.raise({
+          topic: `/devices/${deviceId}/controls/${controlId}`,
+          value
+        })
+
+        return this
+      }
+    }
+  }
+
   reset()
 
   return {
     reset,
-    run
+    publish,
+    withDevice
   }
 }
 
