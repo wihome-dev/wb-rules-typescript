@@ -85,7 +85,7 @@ function configureContext(
   if (configured[deviceId])
     return createContext(deviceId, configured[deviceId])
 
-  const state = {
+  const state = configured[deviceId] = {
     isReady: false,
     isConfigurable: true
   } as DeviceState
