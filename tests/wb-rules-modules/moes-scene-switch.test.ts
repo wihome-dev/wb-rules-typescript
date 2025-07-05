@@ -1,6 +1,6 @@
 import { useSceneSwitch, Button } from '@wbm/moes-scene-switch'
 // TODO: Добавить алиас для папки тестов, например @/wb-engine.
-import { useSimulator } from '../wb-engine'
+import { useSimulator } from '@tests/wb-engine'
 
 const simulator = useSimulator()
 const deviceId = process.env.APP_SCENESW_1

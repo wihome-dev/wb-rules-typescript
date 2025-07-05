@@ -1,0 +1,31 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "target": "es2024",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
+    "baseUrl": ".",
+    "paths": {
+      "@wb/*": [
+        "src/wb-rules/*"
+      ],
+      "@wbm/*": [
+        "src/wb-rules-modules/*"
+      ],
+      "@tests/*": [
+        "tests/*"
+      ]
+    },
+    "skipLibCheck": false,
+    "isolatedModules": true
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "ts-node": {
+    "require": [
+      "tsconfig-paths/register"
+    ],
+    "files": true
+  }
+}

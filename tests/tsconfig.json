@@ -1,26 +1,7 @@
+/*
+  VSCode limitation,
+  see https://github.com/microsoft/vscode/issues/12463
+*/
 {
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "paths": {
-      "@wb*": [
-        "../src/wb-rules*"
-      ],
-      "@wbm*": [
-        "../src/wb-rules-modules*"
-      ]
-    },
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "skipLibCheck": false
-  },
-  "include": [
-    "**/*.ts",
-    "../types/*"
-  ],
-  "ts-node": {
-    "require": [
-      "tsconfig-paths/register"
-    ],
-    "files": true
-  }
+  "extends": "../tsconfig.tests.json",
 }

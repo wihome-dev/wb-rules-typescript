@@ -31,6 +31,16 @@ export default defineConfig([
       }
     }
   },
+  // TypeScript Test Overrides
+  {
+    files: ['tests/**/*.ts'],
+    languageOptions: {
+      parserOptions: {
+        project: ['./tsconfig.tests.json'],
+        tsconfigRootDir: import.meta.dirname
+      }
+    }
+  },
   // TypeScript Type Definition Overrides
   {
     files: ['types/**/*.d.ts'],
