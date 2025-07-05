@@ -3,10 +3,11 @@
     "target": "es5",
     "module": "es2015",
     "moduleResolution": "node",
-    "outDir": "./dist",
+    "baseUrl": ".",
+    "outDir": "dist",
     "paths": {
-      "@wbm*": [
-        "./src/wb-rules-modules/*"
+      "@wbm/*": [
+        "src/wb-rules-modules/*"
       ]
     },
     "allowJs": true,

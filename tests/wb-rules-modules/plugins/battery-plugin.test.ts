@@ -1,5 +1,5 @@
 import { batteryPlugin } from '@wbm/plugins'
-import { useSimulator } from '../../wb-engine'
+import { useSimulator } from '@tests/wb-engine'
 
 const simulator = useSimulator()
 const deviceId = 'knownDeviceId'
