@@ -1,4 +1,4 @@
-import { defineZigbeeDevice } from '@wbm/define-device'
+import { defineZigbeeDevice } from '@wbm/core/define-device'
 
 function zeroPlugin() {
   return () => ({
