@@ -1,4 +1,4 @@
-import { defineZigbeeDevice } from '@wbm/define-device'
+import { defineZigbeeDevice } from '@wbm/core/define-device'
 import { isString } from '@wbm/type-guards'
 import { useEvent } from '@wbm/event'
 import { usePolyfills } from '@wbm/polyfills'
