@@ -30,6 +30,27 @@ test('Handle it once', () => {
   expect(count).toBe(1)
 })
 
+test('Handle once, do not skip others', () => {
+  let count = 0
+  const counterEvent = useEvent()
+
+  counterEvent.once(() => {
+    count += 1
+  })
+
+  counterEvent.on(() => {
+    count += 1
+  })
+
+  counterEvent.on(() => {
+    count += 1
+  })
+
+  counterEvent.raise()
+
+  expect(count).toBe(3)
+})
+
 test('Unsubscribe, type #1', () => {
   const testEvent = useEvent()
   let count = 0

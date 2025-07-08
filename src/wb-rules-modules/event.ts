@@ -45,8 +45,11 @@ export function useEvent<TArgs = void>(): Event<TArgs> {
   }
 
   function raise(args: TArgs) {
-    for (let i = 0, cbs = callbacks; i < cbs.length; i += 1)
-      cbs[i](args)
+    // Защита от сдвига в массиве при выполнении once.
+    const callbacksCopy = callbacks.concat()
+
+    for (const callback of callbacksCopy)
+      callback(args)
   }
 
   return {

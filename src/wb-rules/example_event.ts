@@ -5,11 +5,16 @@ import { useExample } from '@wbm/example-module'
 
 const myEvent = useEvent<string>()
 
-myEvent.on((message) => {
-  log(message)
+myEvent.once((message) => {
+  log(`Once: ${message}`)
 })
 
-myEvent.raise('This is fine.')
+myEvent.on((message) => {
+  log(`Always: ${message}`)
+})
+
+myEvent.raise('This is fine - x1.')
+myEvent.raise('This is fine - x2.')
 
 // Работа с событием модуля.
 
